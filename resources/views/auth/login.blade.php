@@ -18,18 +18,18 @@
             </div>
 
             <!-- Form -->
+            <div>
+            </div>
             <form method="POST" action="{{ route('login') }}" class="space-y-5">
                 @csrf
-
-                <!-- Email -->
+                <!-- Email atau ID SPG/MS -->
                 <div>
-                    <x-input-label for="email" :value="'Email'" />
-                    <x-text-input id="email"
-                        class="block mt-1 w-full rounded-lg focus:ring-red-500 focus:border-red-500" type="email"
-                        name="email" :value="old('email')" required autofocus autocomplete="username" />
-                    <x-input-error :messages="$errors->get('email')" class="mt-1" />
+                    <x-input-label for="login" :value="'Email atau ID SPG/MS'" />
+                    <x-text-input id="login"
+                        class="block mt-1 w-full rounded-lg focus:ring-red-500 focus:border-red-500" type="text"
+                        name="login" :value="old('login')" required autofocus autocomplete="username" />
+                    <x-input-error :messages="$errors->get('login')" class="mt-1" />
                 </div>
-
                 <!-- Password -->
                 <div>
                     <x-input-label for="password" :value="'Kata Sandi'" />

@@ -5,18 +5,35 @@
                 Summary Revenue Bulanan
             </h2>
 
-            <form action="{{ route('transaksi.summary') }}" method="GET" class="flex items-center space-x-2">
+            {{-- <form action="{{ route('transaksi.summary') }}" method="GET" class="flex items-center space-x-2">
                 <input type="month" name="month" value="{{ request('month', now()->format('Y-m')) }}"
                     class="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
                 <button type="submit"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm shadow">
-                    Filter
+                    Filterf
                 </button>
-            </form>
+            </form> --}}
+
+
         </div>
     </x-slot>
 
     <div class="py-6 px-4">
+        <form action="{{ route('transaksi.summary') }}" method="GET" class="mb-6 flex flex-wrap gap-4 items-end">
+            <div>
+                <label for="month" class="block font-semibold mb-1">Filter Bulan</label>
+                <input type="month" name="month" id="month" value="{{ request('month') }}"
+                    class="border border-gray-300 rounded px-3 py-2">
+            </div>
+
+            <div>
+                <button type="submit"
+                    class="bg-red-700 hover:bg-red-800 focus:ring-red-500 text-white py-2 rounded-lg shadow-md transition duration-200 px-4">
+                    Filter
+                </button>
+                <a href="{{ route('targets.index') }}" class="ml-2 text-gray-600 hover:underline">Reset</a>
+            </div>
+        </form>
         <div class="overflow-x-auto bg-white rounded shadow">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-100">

@@ -19,16 +19,17 @@ class UserSeeder extends Seeder
             User::create([
                 'name' => 'Septiawan',
                 'email' => 'mseptiawan017@gmail.com',
-                'password' => Hash::make('password'), // gunakan Hash agar konsisten
+                'password' => Hash::make('password'),
                 'role' => 'marketing',
             ]);
         }
 
         // Buat user promotor jika belum ada
-        if (!User::where('email', 'promotor@example.com')->exists()) {
+        if (!User::where('id_spgms', 'SPG01')->exists()) {
             User::create([
-                'name' => 'Promotor A',
-                'email' => 'promotor@example.com',
+                'name' => 'LIA ANGGRAENINGSIH',
+                'email' => 'promotor01@example.com',
+                'id_spgms' => 'SPG01',
                 'password' => Hash::make('password'),
                 'role' => 'promotor',
             ]);

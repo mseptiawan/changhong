@@ -72,8 +72,14 @@ class SalesTransactionController extends Controller
                 DB::raw('ROUND(COALESCE(SUM(sales_transactions.total_amount), 0) * 1000000 / targets.target_amount * 100, 0) as percent_achieved'),
 
                 DB::raw('COALESCE(SUM(CASE WHEN sales_transactions.bigsize = 1 THEN sales_transactions.total_amount ELSE 0 END), 0) as bigsize_sales'),
-                DB::raw('ROUND(COALESCE(SUM(CASE WHEN sales_transactions.bigsize = 1 THEN sales_transactions.total_amount ELSE 0 END), 0) / (targets.target_bigsize / 1000000), 0) as percent_bigsize')
-
+                DB::raw('FORMAT(
+    COALESCE(SUM(CASE
+        WHEN sales_transactions.bigsize = 1
+        THEN sales_transactions.total_amount
+        ELSE 0
+    END), 0)
+    / (targets.target_bigsize / 1000000) * 100, 0
+) as percent_bigsize')
 
             )
             ->groupBy(

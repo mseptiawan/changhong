@@ -11,52 +11,43 @@ use App\Http\Controllers\{
     DiscontinuedProductController,
     StoreController,
     DataImportController,
+    IncentiveRecapController,
     SalesTransactionController,
     ProfileController
 };
+use App\Models\SalesTransaction;
 
-// Redirect root to login
 Route::get('/', fn() => redirect()->route('login'));
-
-// Redirect /dashboard ke dashboards.index setelah login
 Route::get('/dashboard', fn() => redirect()->route('dashboards.index'))
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-// Semua route di bawah ini hanya bisa diakses setelah login
 Route::middleware(['auth'])->group(function () {
-    // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // Dashboard
+    Route::resource('/incentive-recap', IncentiveRecapController::class);
     Route::resource('dashboards', DashboardController::class);
 
-    // Upload & Import
-    Route::resource('uploads', UploadController::class);
-    Route::get('/data-import', [DataImportController::class, 'index'])->name('data.import.index'); 
-    Route::post('/data-import', [DataImportController::class, 'store'])->name('data.import.store');
+    // Route::middleware('role:promotor')->group(function () {
+    // });
 
-    // Target
-    Route::get('/targets/filter', [TargetController::class, 'filterByDate'])->name('targets.filterByDate');
-    Route::resource('/targets', TargetController::class);
-
-    // SPGM & Store
-    Route::get('/spgms/autocomplete', [SpgmController::class, 'autocomplete'])->name('spgms.autocomplete');
-    Route::resource('promoters', SpgmController::class);
-    Route::get('/stores/autocomplete', [StoreController::class, 'autocomplete'])->name('stores.autocomplete');
-
-    // Product & Incentives
-    Route::get('/products/autocomplete', [ModelIncentiveController::class, 'autocomplete'])->name('products.autocomplete');
-    Route::resource('products', ProductController::class);
-    Route::resource('model-incentives', ModelIncentiveController::class);
-    Route::resource('discontinued-products', DiscontinuedProductController::class);
-
-    // Transaksi
-    Route::get('/transaksi/rincian', [SalesTransactionController::class, 'rincian'])->name('transaksi.rincian');
-    Route::get('/transaksi/summary', [SalesTransactionController::class, 'summary'])->name('transaksi.summary');
+    Route::middleware('role:marketing')->group(function () {
+        Route::resource('uploads', UploadController::class);
+        Route::get('/data-import', [DataImportController::class, 'index'])->name('data.import.index');
+        Route::post('/data-import', [DataImportController::class, 'store'])->name('data.import.store');
+        Route::get('/targets/filter', [TargetController::class, 'filterByDate'])->name('targets.filterByDate');
+        Route::resource('/targets', TargetController::class);
+        Route::get('/spgms/autocomplete', [SpgmController::class, 'autocomplete'])->name('spgms.autocomplete');
+        Route::resource('promoters', SpgmController::class);
+        Route::get('/stores/autocomplete', [StoreController::class, 'autocomplete'])->name('stores.autocomplete');
+        Route::get('/products/autocomplete', [ModelIncentiveController::class, 'autocomplete'])->name('products.autocomplete');
+        Route::resource('products', ProductController::class);
+        Route::resource('model-incentives', ModelIncentiveController::class);
+        Route::resource('discontinued-products', DiscontinuedProductController::class);
+        Route::get('/transaksi/summary/download', [SalesTransactionController::class, 'downloadPdf'])->name('targets.downloadPdf');
+        Route::get('/transaksi/rincian', [SalesTransactionController::class, 'rincian'])->name('transaksi.rincian');
+        Route::get('/transaksi/summary', [SalesTransactionController::class, 'summary'])->name('transaksi.summary');
+    });
 });
 
-// Auth routes (login/register)
 require __DIR__ . '/auth.php';

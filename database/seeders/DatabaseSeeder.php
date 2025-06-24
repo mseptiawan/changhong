@@ -14,11 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Membuat user dengan email dan password tertentu
-        User::create([
-            'name' => 'Septiawan',
-            'email' => 'mseptiawan017@gmail.com',
-            'password' => Hash::make('password'), // selalu hash password
-        ]);
+        $this->call(UserSeeder::class);
     }
 }

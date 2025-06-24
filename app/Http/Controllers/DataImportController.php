@@ -28,13 +28,12 @@ class DataImportController extends Controller
         DB::beginTransaction();
 
         try {
-            $skipped = 0; // untuk hitung data duplikat yang dilewati
             $inserted = 0;
 
             foreach ($rows as $i => $row) {
-                if ($i == 1) continue; // skip baris header
+                if ($i == 1) continue; // Skip header
 
-                $tanggal     = trim($row['A']); // format: 2025-02-28
+                $tanggal     = trim($row['A']);
                 $storeName   = trim($row['B']);
                 $spgmName    = trim($row['C']);
                 $productName = trim($row['D']);
@@ -42,35 +41,19 @@ class DataImportController extends Controller
                 $qty         = intval($row['F']);
                 $saleType    = strtolower(trim($row['G']));
 
-                // Lookup data
                 $store   = DB::table('stores')->where('name', $storeName)->first();
                 $spgm    = DB::table('spgms')->where('name', $spgmName)->first();
                 $product = DB::table('products')->where('product_name', $productName)->first();
 
-                // Validasi lookup
                 if (!$store || !$spgm || !$product) {
                     Log::warning("Data tidak ditemukan: store=$storeName, spgm=$spgmName, product=$productName");
                     continue;
                 }
 
-                // Cek apakah data sudah pernah diinput
-                $exists = DB::table('sales_transactions')
-                    ->where('transaction_date', $tanggal)
-                    ->where('spgms_id', $spgm->id_spgms)
-                    ->where('product_id', $product->id_product)
-                    ->exists();
-
-                if ($exists) {
-                    $skipped++;
-                    continue;
-                }
-
-                // Hitung total amount
                 $sellOutPrice           = $product->sell_out_price;
                 $pricePerUnitInMillions = $sellOutPrice / 1000000;
-                $totalAmount = round($pricePerUnitInMillions * $qty);
+                $totalAmount            = round($pricePerUnitInMillions * $qty);
 
-                // Simpan data
                 DB::table('sales_transactions')->insert([
                     'transaction_date' => $tanggal,
                     'store_id'         => $store->id_store,
@@ -89,13 +72,8 @@ class DataImportController extends Controller
 
             DB::commit();
 
-            // Buat pesan sukses
-            $message = "Berhasil mengimpor $inserted data penjualan.";
-            if ($skipped > 0) {
-                $message .= " ($skipped data duplikat dilewati)";
-            }
-
-            return redirect()->route('transaksi.rincian')->with('success', $message);
+            return redirect()->route('transaksi.rincian')
+                ->with('success', "Berhasil mengimpor $inserted data transaksi (duplikat diperbolehkan).");
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Import error: ' . $e->getMessage());
