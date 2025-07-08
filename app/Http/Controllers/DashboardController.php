@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -12,7 +13,25 @@ class DashboardController extends Controller
     public function index()
     {
         //
-        return view('dashboards.index');
+        $targetMonth = 2; // Februari
+        $targetYear  = 2025;
+
+        $ranking = DB::table('sales_transactions')
+            ->select('spgms_id', DB::raw('SUM(quantity) as total_qty'))
+            ->join('products', 'sales_transactions.product_id', '=', 'products.id_product')
+            ->where('products.bigsize', true)
+            ->whereMonth('transaction_date', $targetMonth)
+            ->whereYear('transaction_date', $targetYear)
+            ->groupBy('spgms_id')
+            ->orderByDesc('total_qty')
+            ->get();
+
+        $top10 = $ranking->take(10);
+        $top20 = $ranking->slice(10, 10);
+
+        $spgms = DB::table('spgms')->pluck('name', 'id_spgms');
+
+        return view('dashboards.index', compact('top10', 'top20', 'spgms'));
     }
 
     /**
