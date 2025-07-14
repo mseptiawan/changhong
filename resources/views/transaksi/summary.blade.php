@@ -38,14 +38,14 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-100">
                     <tr class="text-xs text-gray-700 uppercase text-left">
-                        <th class="px-4 py-2">SPGM</th>
-                        <th class="px-4 py-2">Company</th>
+                        <th class="px-4 py-2">Nama SPG</th>
+                        <th class="px-4 py-2">Perusahaan</th>
                         <th class="px-4 py-2">Target (Jt)</th>
-                        <th class="px-4 py-2">Actual (Jt)</th>
-                        <th class="px-4 py-2">% Achieved</th>
+                        <th class="px-4 py-2">Penjualan Aktual (Jt)</th>
+                        <th class="px-4 py-2">% Pencapaian</th>
                         <th class="px-4 py-2">Target Bigsize (Jt)</th>
-                        <th class="px-4 py-2">Bigsize Actual (Jt)</th>
-                        <th class="px-4 py-2">% Bigsize</th>
+                        <th class="px-4 py-2">Penjualan Bigsize (Jt)</th>
+                        <th class="px-4 py-2">% Pencapaian Bigsize</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200 text-sm capitalize">

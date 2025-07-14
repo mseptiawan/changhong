@@ -50,7 +50,7 @@
                         <span>Dashboard</span>
                     </a>
 
-                    @if (auth()->user()->role === 'promotor')
+                    @if (auth()->user()->role === 'promotor' || auth()->user()->role === 'manager')
                         <a href="{{ route('incentive-recap.index') }}"
                             class="flex items-center space-x-3 p-2 rounded-lg transition-transform transform duration-200 hover:translate-x-1">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
@@ -102,7 +102,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M7 11V9a4 4 0 014-4h4" />
                                     </svg>
-                                    <span>Rincian Amount</span>
+                                    <span>Rincian Total</span>
                                 </a>
 
                                 <a href="{{ route('transaksi.summary') }}"
@@ -112,7 +112,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M3 10h11M9 21V3m9 18v-6a3 3 0 00-3-3H9" />
                                     </svg>
-                                    <span>Summary Rev</span>
+                                    <span>Laporan Pendapatan</span>
                                 </a>
                             </div>
                         </div>

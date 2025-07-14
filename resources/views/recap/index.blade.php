@@ -102,7 +102,7 @@
                         class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 z-50 flex items-center justify-center">
                         <div class="bg-white rounded shadow p-6 w-[90%] max-w-2xl">
                             <h2 class="text-lg font-bold mb-4">Detail Insentif</h2>
-                            <div id="detailContent" class="text-sm space-y-1">
+                            <div id="detailContent" class="text-sm space-y-1 overflow-y-auto max-h-[70vh] pr-2">
                                 <!-- Konten akan diisi via JavaScript -->
                             </div>
                             <div class="mt-4 text-right">
@@ -121,23 +121,70 @@
 
 <script>
     function showDetail(row) {
+        let bonus = parseInt(row['Bigsize Top Bonus (IDR)']) || 0;
+
         let content = `
-            <p><strong>SPGM:</strong> ${row['SPGM']}</p>
-            <p><strong>Company:</strong> ${row['Company']}</p>
-            <p><strong>Target:</strong> ${row['Target (Jt)']}</p>
-            <p><strong>Actual:</strong> ${row['Actual (Jt)']}</p>
-            <p><strong>% Achieved:</strong> ${row['% Achieved']}%</p>
-            <p><strong>Bigsize Target:</strong> ${row['Target Bigsize (Jt)']}</p>
-            <p><strong>Bigsize Actual:</strong> ${row['Bigsize Actual (Jt)']}</p>
-            <p><strong>% Bigsize:</strong> ${row['% Bigsize']}%</p>
-            <p><strong>Paid % Achieved:</strong> ${row['Paid % Achieved']}%</p>
-            <p><strong>Paid % Bigsize:</strong> ${row['Paid % Bigsize']}%</p>
-            <p><strong>Total Incentive Percent:</strong> ${row['Total Incentive Percent']}%</p>
-            <p><strong>Total Incentive (IDR):</strong> Rp ${Number(row['Total Incentive (IDR)']).toLocaleString('id-ID')}</p>
+            <p><strong>Nama SPG:</strong> ${row['SPGM']}</p>
+            <p><strong>Perusahaan:</strong> ${row['Company']}</p>
+            <p><strong>Target Penjualan:</strong> ${Number(row['Target (Jt)']) / 1_000_000} Juta</p>
+
+            <p><strong>Penjualan Aktual:</strong> ${row['Actual (Jt)']} Juta</p>
+            <p><strong>Pencapaian Penjualan:</strong> ${row['% Achieved']}%</p>
+            <p><strong>Target Big Size:</strong> ${(Number(row['Target Bigsize (Jt)']) / 1_000_000).toLocaleString('id-ID')} Juta</p>
+
+            <p><strong>Penjualan Big Size:</strong> ${row['Bigsize Actual (Jt)']} Juta</p>
+            <p><strong>Pencapaian Big Size:</strong> ${row['% Bigsize']}%</p>
+            <p><strong>Dibayar Penjualan:</strong> ${row['Paid % Achieved']}%</p>
+            <p><strong>Dibayar Big Size:</strong> ${row['Paid % Bigsize']}%</p>
+
+            <p><strong>Total Persentase Insentif:</strong> ${row['Total Incentive Percent']}%</p>
+
+
+            <p><strong>Insentif Dasar:</strong> Rp ${Number(row['Base Incentive (IDR)']).toLocaleString('id-ID')}</p>
+            <p><strong>Insentif Reward:</strong> Rp ${Number(row['Reward Incentive (IDR)']).toLocaleString('id-ID')}</p>
+            <p><strong>Total Sebelum Persen:</strong> Rp ${Number(row['Gross Incentive (IDR)']).toLocaleString('id-ID')}</p>
+            <p><strong>Dibayar ${row['Total Incentive Percent']}%:</strong> Rp ${Number(row['Paid Incentive (IDR)']).toLocaleString('id-ID')}</p>
+            <p><strong>Bonus Top Big Size:</strong> Rp ${bonus.toLocaleString('id-ID')}</p>
+            <p><strong>Total Insentif:</strong> Rp ${Number(row['Total Incentive (IDR)']).toLocaleString('id-ID')}</p>
         `;
+
+
+        // Jika ada daftar produk, tampilkan tabel
+        if (row['Products Sold'] && Array.isArray(row['Products Sold']) && row['Products Sold'].length > 0) {
+            let productRows = '';
+            row['Products Sold'].forEach((p, index) => {
+                productRows += `
+                <tr>
+                    <td class="border px-2 py-1 text-center">${index + 1}</td>
+                    <td class="border px-2 py-1">${p.product_name}</td>
+                    <td class="border px-2 py-1 text-right">${p.quantity}</td>
+                    <td class="border px-2 py-1 text-right">Rp ${Number(p.total_amount).toLocaleString('id-ID')}</td>
+                </tr>`;
+            });
+
+            content += `
+            <h3 class="mt-4 font-semibold">Daftar Produk yang Dijual</h3>
+            <div class="overflow-x-auto mt-2">
+                <table class="min-w-full text-sm border border-gray-300">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="border px-2 py-1">No</th>
+                            <th class="border px-2 py-1">Nama Produk</th>
+                            <th class="border px-2 py-1 text-right">Qty</th>
+                            <th class="border px-2 py-1 text-right">Total (Rp)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${productRows}
+                    </tbody>
+                </table>
+            </div>`;
+        }
+
         document.getElementById('detailContent').innerHTML = content;
         document.getElementById('detailModal').classList.remove('hidden');
     }
+
 
     function closeDetail() {
         document.getElementById('detailModal').classList.add('hidden');

@@ -34,5 +34,15 @@ class UserSeeder extends Seeder
                 'role' => 'promotor',
             ]);
         }
+
+        // Buat user manager jika belum ada
+        if (!User::where('email', 'manager@gmail.com')->exists()) {
+            User::create([
+                'name' => 'Pak Ronald',
+                'email' => 'manager@gmail.com',
+                'password' => Hash::make('password'),
+                'role' => 'manager',
+            ]);
+        }
     }
 }
