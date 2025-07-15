@@ -8,21 +8,15 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Google Fonts: Figtree & Poppins -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-        <!-- Alpine.js -->
         <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
-        <!-- Laravel Vite -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        <!-- jQuery UI (untuk autocomplete) -->
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     </head>
@@ -30,16 +24,13 @@
 
     <body class="font-sans antialiased bg-gray-100">
         <div class="flex min-h-screen">
-            <!-- Sidebar -->
             <aside
                 class="w-72 bg-[#F3F4F6] text-black flex flex-col py-8 px-6 space-y-6 shadow-lg fixed top-0 left-0 h-screen z-10">
-                <!-- Logo -->
                 <div class="flex items-center space-x-3">
                     {{-- <img src="{{ asset('changhong.png') }}" alt="Logo" class="w-10 h-10 rounded-full"> --}}
                     <h2 class="text-2xl font-bold text-red-700 tracking-wide">SPG/M Komisi System</h2>
                 </div>
 
-                <!-- Navigation -->
                 <nav class="flex-1 space-y-2 text-sm font-medium">
                     <a href="{{ route('dashboards.index') }}"
                         class="flex items-center space-x-3 p-2 rounded-lg  transition-transform transform duration-200 hover:translate-x-1">

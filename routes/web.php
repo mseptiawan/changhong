@@ -28,9 +28,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/incentive-recap', IncentiveRecapController::class);
     Route::resource('dashboards', DashboardController::class);
 
-    // Route::middleware('role:promotor')->group(function () {
-    // });
-
     Route::middleware('role:marketing')->group(function () {
         Route::resource('uploads', UploadController::class);
         Route::get('/data-import', [DataImportController::class, 'index'])->name('data.import.index');
