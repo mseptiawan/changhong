@@ -41,6 +41,7 @@
                         <span>Dashboard</span>
                     </a>
 
+                    {{-- Rekap Insentif: untuk promotor & manager --}}
                     @if (auth()->user()->role === 'promotor' || auth()->user()->role === 'manager')
                         <a href="{{ route('incentive-recap.index') }}"
                             class="flex items-center space-x-3 p-2 rounded-lg transition-transform transform duration-200 hover:translate-x-1">
@@ -52,6 +53,53 @@
                             <span>Rekap Insentif Promotor</span>
                         </a>
                     @endif
+
+                    {{-- Transaksi Penjualan: khusus manager --}}
+                    @if (auth()->user()->role === 'manager')
+                        <div x-data="{ openTransaksi: false }" class="space-y-1">
+                            <button @click="openTransaksi = !openTransaksi"
+                                class="flex justify-between items-center w-full p-2 rounded-lg transition-transform transform duration-200 hover:translate-x-1">
+                                <span class="flex items-center space-x-3">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.6 8H19M7 13l2 8m6-8l-2 8" />
+                                    </svg>
+                                    <span>Transaksi Penjualan</span>
+                                </span>
+                                <svg :class="{ 'rotate-180': openTransaksi }" class="w-4 h-4 transition-transform"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            <div x-show="openTransaksi" x-cloak class="pl-6 space-y-1 rounded-md">
+                                <a href="{{ route('transaksi.rincian') }}"
+                                    class="flex items-center space-x-2 py-2 text-sm">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9 17v-2a4 4 0 014-4h4" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M7 11V9a4 4 0 014-4h4" />
+                                    </svg>
+                                    <span>Rincian Total</span>
+                                </a>
+
+                                <a href="{{ route('transaksi.summary') }}"
+                                    class="flex items-center space-x-2 py-2 text-sm">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M3 10h11M9 21V3m9 18v-6a3 3 0 00-3-3H9" />
+                                    </svg>
+                                    <span>Laporan Pendapatan</span>
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+
 
 
                     @if (auth()->user()->role === 'marketing')

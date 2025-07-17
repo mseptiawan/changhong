@@ -28,6 +28,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/incentive-recap', IncentiveRecapController::class);
     Route::resource('dashboards', DashboardController::class);
 
+    Route::middleware('role:manager|marketing')->group(function () {
+        Route::get('/transaksi/rincian', [SalesTransactionController::class, 'rincian'])->name('transaksi.rincian');
+        Route::get('/transaksi/summary', [SalesTransactionController::class, 'summary'])->name('transaksi.summary');
+    });
+
     Route::middleware('role:marketing')->group(function () {
         Route::resource('uploads', UploadController::class);
         Route::get('/data-import', [DataImportController::class, 'index'])->name('data.import.index');
@@ -41,9 +46,6 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('products', ProductController::class);
         Route::resource('model-incentives', ModelIncentiveController::class);
         Route::resource('discontinued-products', DiscontinuedProductController::class);
-        Route::get('/transaksi/summary/download', [SalesTransactionController::class, 'downloadPdf'])->name('targets.downloadPdf');
-        Route::get('/transaksi/rincian', [SalesTransactionController::class, 'rincian'])->name('transaksi.rincian');
-        Route::get('/transaksi/summary', [SalesTransactionController::class, 'summary'])->name('transaksi.summary');
     });
 });
 
