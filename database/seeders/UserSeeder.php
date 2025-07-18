@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Spatie\Permission\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,35 +15,36 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Buat user marketing jika belum ada
-        if (!User::where('email', 'mseptiawan017@gmail.com')->exists()) {
-            User::create([
-                'name' => 'Septiawan',
-                'email' => 'mseptiawan017@gmail.com',
-                'password' => Hash::make('password'),
-                'role' => 'marketing',
-            ]);
+        foreach (['marketing', 'promotor', 'manager'] as $role) {
+            Role::firstOrCreate(['name' => $role]);
         }
 
-        // Buat user promotor jika belum ada
-        if (!User::where('id_spgms', 'SPG01')->exists()) {
-            User::create([
+        $marketing = User::firstOrCreate(
+            ['email' => 'mseptiawan017@gmail.com'],
+            [
+                'name' => 'Septiawan',
+                'password' => Hash::make('password'),
+            ]
+        );
+        $marketing->assignRole('marketing');
+
+        $promotor = User::firstOrCreate(
+            ['email' => 'promotor01@example.com'],
+            [
                 'name' => 'LIA ANGGRAENINGSIH',
-                'email' => 'promotor01@example.com',
                 'id_spgms' => 'SPG01',
                 'password' => Hash::make('password'),
-                'role' => 'promotor',
-            ]);
-        }
+            ]
+        );
+        $promotor->assignRole('promotor');
 
-        // Buat user manager jika belum ada
-        if (!User::where('email', 'manager@gmail.com')->exists()) {
-            User::create([
+        $manager = User::firstOrCreate(
+            ['email' => 'manager@gmail.com'],
+            [
                 'name' => 'Pak Ronald',
-                'email' => 'manager@gmail.com',
                 'password' => Hash::make('password'),
-                'role' => 'manager',
-            ]);
-        }
+            ]
+        );
+        $manager->assignRole('manager');
     }
 }

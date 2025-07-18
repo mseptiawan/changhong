@@ -15,7 +15,6 @@ use App\Http\Controllers\{
     SalesTransactionController,
     ProfileController
 };
-use App\Models\SalesTransaction;
 
 Route::get('/', fn() => redirect()->route('login'));
 Route::get('/dashboard', fn() => redirect()->route('dashboards.index'))
@@ -28,10 +27,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/incentive-recap', IncentiveRecapController::class);
     Route::resource('dashboards', DashboardController::class);
 
-    Route::middleware('role:manager|marketing')->group(function () {
-        Route::get('/transaksi/rincian', [SalesTransactionController::class, 'rincian'])->name('transaksi.rincian');
-        Route::get('/transaksi/summary', [SalesTransactionController::class, 'summary'])->name('transaksi.summary');
-    });
 
     Route::middleware('role:marketing')->group(function () {
         Route::resource('uploads', UploadController::class);
@@ -46,6 +41,11 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('products', ProductController::class);
         Route::resource('model-incentives', ModelIncentiveController::class);
         Route::resource('discontinued-products', DiscontinuedProductController::class);
+    });
+
+    Route::middleware(['role:manager|marketing'])->group(function () {
+        Route::get('/transaksi/rincian', [SalesTransactionController::class, 'rincian'])->name('transaksi.rincian');
+        Route::get('/transaksi/summary', [SalesTransactionController::class, 'summary'])->name('transaksi.summary');
     });
 });
 
