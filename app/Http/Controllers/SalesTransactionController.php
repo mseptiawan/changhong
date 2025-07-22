@@ -80,7 +80,9 @@ class SalesTransactionController extends Controller
                 'targets.target_amount',
                 'targets.target_bigsize'
             )
+            ->havingRaw('COALESCE(SUM(sales_transactions.total_amount), 0) > 0')
             ->get();
+
 
 
         return view('transaksi.summary', compact('summary'));

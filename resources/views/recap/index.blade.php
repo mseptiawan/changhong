@@ -8,7 +8,6 @@
                 <form action="" method="GET" class="flex items-center space-x-2">
                     <input type="text" name="search" placeholder="Cari SPGM..." value="{{ request('search') }}"
                         class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" />
-
                     <button type="submit"
                         class="bg-red-700 hover:bg-red-800 focus:ring-red-500 text-white py-2 rounded-lg shadow-md transition duration-200 px-4 text-sm">
                         Cari
@@ -39,15 +38,6 @@
                 <thead class="bg-gray-100 text-left font-semibold">
                     <tr>
                         <th class="p-2 border">SPGM</th>
-                        {{-- <th class="p-2 border">Company</th>
-                        <th class="p-2 border text-right">Target (Jt)</th>
-                        <th class="p-2 border text-right">Actual (Jt)</th>
-                        <th class="p-2 border text-right">% Achieved</th>
-                        <th class="p-2 border text-right">Target Bigsize (Jt)</th>
-                        <th class="p-2 border text-right">Bigsize Actual (Jt)</th>
-                        <th class="p-2 border text-right">% Bigsize</th>
-                        <th class="p-2 border text-right">Paid % Achieved</th>
-                        <th class="p-2 border text-right">Paid % Bigsize</th> --}}
                         <th class="p-2 border text-right">Persentase Rate Payment</th>
                         <th class="p-2 border text-right ">Total Insentif</th>
                         <th class="p-2 border">
@@ -59,15 +49,7 @@
                         @if ($row['Actual (Jt)'] > 0)
                             <tr class="border-t hover:bg-gray-50">
                                 <td class="p-2 border">{{ $row['SPGM'] }}</td>
-                                {{-- <td class="p-2 border">{{ $row['Company'] }}</td>
-                                <td class="p-2 border text-right">{{ number_format($row['Target (Jt)']) }}</td>
-                                <td class="p-2 border text-right">{{ number_format($row['Actual (Jt)']) }}</td>
-                                <td class="p-2 border text-right">{{ $row['% Achieved'] }}%</td>
-                                <td class="p-2 border text-right">{{ number_format($row['Target Bigsize (Jt)']) }}</td>
-                                <td class="p-2 border text-right">{{ number_format($row['Bigsize Actual (Jt)']) }}</td>
-                                <td class="p-2 border text-right">{{ $row['% Bigsize'] }}%</td>
-                                <td class="p-2 border text-right">{{ $row['Paid % Achieved'] }}%</td>
-                                <td class="p-2 border text-right">{{ $row['Paid % Bigsize'] }}%</td> --}}
+
                                 <td class="p-2 border text-right font-semibold ">
                                     {{ $row['Total Incentive Percent'] }}%
                                 </td>
@@ -127,19 +109,14 @@
             <p><strong>Nama SPG:</strong> ${row['SPGM']}</p>
             <p><strong>Perusahaan:</strong> ${row['Company']}</p>
             <p><strong>Target Penjualan:</strong> ${Number(row['Target (Jt)']) / 1_000_000} Juta</p>
-
             <p><strong>Penjualan Aktual:</strong> ${row['Actual (Jt)']} Juta</p>
             <p><strong>Pencapaian Penjualan:</strong> ${row['% Achieved']}%</p>
             <p><strong>Target Big Size:</strong> ${(Number(row['Target Bigsize (Jt)']) / 1_000_000).toLocaleString('id-ID')} Juta</p>
-
             <p><strong>Penjualan Big Size:</strong> ${row['Bigsize Actual (Jt)']} Juta</p>
             <p><strong>Pencapaian Big Size:</strong> ${row['% Bigsize']}%</p>
             <p><strong>Dibayar Penjualan:</strong> ${row['Paid % Achieved']}%</p>
             <p><strong>Dibayar Big Size:</strong> ${row['Paid % Bigsize']}%</p>
-
             <p><strong>Total Persentase Insentif:</strong> ${row['Total Incentive Percent']}%</p>
-
-
             <p><strong>Insentif Dasar:</strong> Rp ${Number(row['Base Incentive (IDR)']).toLocaleString('id-ID')}</p>
             <p><strong>Insentif Reward:</strong> Rp ${Number(row['Reward Incentive (IDR)']).toLocaleString('id-ID')}</p>
             <p><strong>Total Sebelum Persen:</strong> Rp ${Number(row['Gross Incentive (IDR)']).toLocaleString('id-ID')}</p>
@@ -147,9 +124,6 @@
             <p><strong>Bonus Top Big Size:</strong> Rp ${bonus.toLocaleString('id-ID')}</p>
             <p><strong>Total Insentif:</strong> Rp ${Number(row['Total Incentive (IDR)']).toLocaleString('id-ID')}</p>
         `;
-
-
-        // Jika ada daftar produk, tampilkan tabel
         if (row['Products Sold'] && Array.isArray(row['Products Sold']) && row['Products Sold'].length > 0) {
             let productRows = '';
             row['Products Sold'].forEach((p, index) => {
@@ -161,7 +135,6 @@
                     <td class="border px-2 py-1 text-right">Rp ${Number(p.total_amount).toLocaleString('id-ID')}</td>
                 </tr>`;
             });
-
             content += `
             <h3 class="mt-4 font-semibold">Daftar Produk yang Dijual</h3>
             <div class="overflow-x-auto mt-2">
@@ -180,11 +153,9 @@
                 </table>
             </div>`;
         }
-
         document.getElementById('detailContent').innerHTML = content;
         document.getElementById('detailModal').classList.remove('hidden');
     }
-
 
     function closeDetail() {
         document.getElementById('detailModal').classList.add('hidden');

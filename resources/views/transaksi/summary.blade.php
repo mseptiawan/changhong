@@ -73,6 +73,25 @@
                             </td>
                         </tr>
                     @endforelse
+                    @php
+                        $total_target = $summary->sum('target_amount') / 1_000_000;
+                        $total_actual = $summary->sum('actual_sales');
+                        $total_percent_achieved = $summary->sum('percent_achieved');
+
+                        $total_target_bigsize = $summary->sum('target_bigsize') / 1_000_000;
+                        $total_bigsize_sales = $summary->sum('bigsize_sales');
+                        $total_percent_bigsize = $summary->sum('percent_bigsize');
+                    @endphp
+
+                    <tr class="bg-gray-100 font-bold text-right">
+                        <td colspan="2" class="px-4 py-2">Total</td>
+                        <td class="px-4 py-2">{{ number_format($total_target, 0, ',', '.') }}</td>
+                        <td class="px-4 py-2">{{ number_format($total_actual) }}</td>
+                        <td class="px-4 py-2">{{ $total_percent_achieved }}%</td>
+                        <td class="px-4 py-2">{{ number_format($total_target_bigsize, 0, ',', '.') }}</td>
+                        <td class="px-4 py-2">{{ number_format($total_bigsize_sales) }}</td>
+                        <td class="px-4 py-2">{{ $total_percent_bigsize }}%</td>
+                    </tr>
                 </tbody>
             </table>
         </div>

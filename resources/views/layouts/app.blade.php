@@ -42,20 +42,19 @@
                     </a>
 
                     {{-- Rekap Insentif: untuk promotor & manager --}}
-                    @if (auth()->user()->role === 'promotor' || auth()->user()->role === 'manager')
+                    @hasanyrole('promotor|manager')
                         <a href="{{ route('incentive-recap.index') }}"
                             class="flex items-center space-x-3 p-2 rounded-lg transition-transform transform duration-200 hover:translate-x-1">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M9 17v-4h6v4m-3-6a2 2 0 110-4 2 2 0 010 4z" />
                             </svg>
                             <span>Rekap Insentif Promotor</span>
                         </a>
-                    @endif
+                    @endrole
 
                     {{-- Transaksi Penjualan: khusus manager --}}
-                    @if (auth()->user()->role === 'manager')
+                    @role('manager')
                         <div x-data="{ openTransaksi: false }" class="space-y-1">
                             <button @click="openTransaksi = !openTransaksi"
                                 class="flex justify-between items-center w-full p-2 rounded-lg transition-transform transform duration-200 hover:translate-x-1">
@@ -75,20 +74,16 @@
                             </button>
 
                             <div x-show="openTransaksi" x-cloak class="pl-6 space-y-1 rounded-md">
-                                <a href="{{ route('transaksi.rincian') }}"
-                                    class="flex items-center space-x-2 py-2 text-sm">
+                                <a href="{{ route('transaksi.rincian') }}" class="flex items-center space-x-2 py-2 text-sm">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
                                         viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M9 17v-2a4 4 0 014-4h4" />
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M7 11V9a4 4 0 014-4h4" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2a4 4 0 014-4h4" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 11V9a4 4 0 014-4h4" />
                                     </svg>
                                     <span>Rincian Total</span>
                                 </a>
 
-                                <a href="{{ route('transaksi.summary') }}"
-                                    class="flex items-center space-x-2 py-2 text-sm">
+                                <a href="{{ route('transaksi.summary') }}" class="flex items-center space-x-2 py-2 text-sm">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -98,15 +93,13 @@
                                 </a>
                             </div>
                         </div>
-                    @endif
+                    @endrole
 
 
-
-                    @if (auth()->user()->role === 'marketing')
+                    @role('marketing')
                         <a href="{{ route('data.import.index') }}"
                             class="flex items-center space-x-3 p-2 rounded-lg  transition-transform transform duration-200 hover:translate-x-1">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M4 12h16M4 8h16M4 4h16" />
                             </svg>
@@ -136,10 +129,8 @@
                                     class="flex items-center space-x-2 py-2 text-sm">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
                                         viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M9 17v-2a4 4 0 014-4h4" />
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M7 11V9a4 4 0 014-4h4" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2a4 4 0 014-4h4" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 11V9a4 4 0 014-4h4" />
                                     </svg>
                                     <span>Rincian Total</span>
                                 </a>
@@ -185,8 +176,8 @@
                                     </svg>
                                     <span>Kelola Produk</span>
                                 </span>
-                                <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transition-transform"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transition-transform" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 9l-7 7-7-7">
                                     </path>
@@ -227,7 +218,7 @@
 
 
                         <!-- Akun -->
-                    @endif
+                    @endrole
 
                     <div x-data="{ open: false }" class="relative space-y-2">
                         <button @click="open = !open"
